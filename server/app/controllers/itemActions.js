@@ -44,10 +44,13 @@ const add = async (req, res, next) => {
 
   try {
     // Insert the item into the database
-    const insertId = await tables.item.create(item);
+    const insertId = await tables.item.create({
+      ...item,
+      file: req.file.filename,
+    });
 
     // Respond with HTTP 201 (Created) and the ID of the newly inserted item
-    res.status(201).json({ insertId });
+    res.status(201).json({ ...item, file: req.file.filename, id: insertId });
   } catch (err) {
     // Pass any errors to the error-handling middleware
     next(err);

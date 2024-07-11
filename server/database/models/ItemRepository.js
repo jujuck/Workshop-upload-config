@@ -7,19 +7,6 @@ class ItemRepository extends AbstractRepository {
     super({ table: "item" });
   }
 
-  // The C of CRUD - Create operation
-
-  async create(item) {
-    // Execute the SQL INSERT query to add a new item to the "item" table
-    const [result] = await this.database.query(
-      `insert into ${this.table} (title, user_id) values (?, ?)`,
-      [item.title, item.user_id]
-    );
-
-    // Return the ID of the newly inserted item
-    return result.insertId;
-  }
-
   // The Rs of CRUD - Read operations
 
   async read(id) {
@@ -39,6 +26,17 @@ class ItemRepository extends AbstractRepository {
 
     // Return the array of items
     return rows;
+  }
+
+  async create(item) {
+    // Execute the SQL SELECT query to retrieve all items from the "item" table
+    const [result] = await this.database.query(
+      `INSERT INTO ${this.table} (title, subtitle, image_src) VALUES (?, ?, ?)`,
+      [item.title, item.subtitle, item.file]
+    );
+
+    // Return the array of items
+    return result.insertId;
   }
 
   // The U of CRUD - Update operation
